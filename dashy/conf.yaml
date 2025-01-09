@@ -1,0 +1,13 @@
+pageInfo:
+  title: 'Loudemer'
+sections: # An array of sections
+- name: Getting Started
+  items: # An array of items
+  - title: Nginx docker
+    description: A live demo
+    icon: fas fa-server
+    url: http://192.168.1.14:80
+  - title: Demo
+    description: A live demo
+    icon: fab fa-html5
+    url: http://192.168.1.14:8081

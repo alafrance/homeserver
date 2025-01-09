@@ -1,0 +1,79 @@
+services:
+  proxy:
+    image: nginx:latest
+    container_name: server-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./proxy/conf.d:/etc/nginx/conf.d
+      - ./proxy/certs:/etc/nginx/certs:ro
+    restart: always
+    depends_on:
+      - dashy
+  dashy:
+    image: lissy93/dashy
+    container_name: dashy
+    volumes:
+      - ./dashy/conf.yaml:/app/user-data/conf.yml
+    environment:
+      - NODE_ENV=production
+    restart: always  
+  # site1_nginx:
+  #   image: nginx:latest
+  #   container_name: site1_nginx
+  #   volumes:
+  #     - ./site1/conf.d:/etc/nginx/conf.d
+  #     - ./site1/html:/usr/share/nginx/html:ro
+  #     # - /path/to/ssl/certs:/etc/nginx/ssl
+  #   expose:
+  #     - "80"
+  #   # restart: always
+
+    
+  # site2_nginx:
+  #   image: nginx:latest
+  #   container_name: site2_nginx
+  #   volumes:
+  #     - ./site2/conf.d:/etc/nginx/conf.d
+  #     - ./site2/html:/usr/share/nginx/html:ro
+  #     # - /path/to/ssl/certs:/etc/nginx/ssl
+  #   expose:
+  #     - "80"
+    # restart: always
+
+  # nextcloud:
+  #   image: nextcloud:latest
+  #   container_name: nextcloud
+  #   ports:
+  #     - "8080:80"
+  #   volumes:
+  #     - /mnt/raid/nextcloud/data:/var/www/html/data
+  #     - /mnt/raid/nextcloud/config:/var/www/html/config
+  #     - /mnt/raid/nextcloud/apps:/var/www/html/custom_apps
+  #   environment:
+  #     - MYSQL_HOST=db
+  #     - MYSQL_DATABASE=nextcloud
+  #     - MYSQL_USER=nextcloud
+  #     - MYSQL_PASSWORD=password
+  #   depends_on:
+  #     - db
+  #   restart: always
+
+  # db:
+  #   image: mariadb:latest
+  #   container_name: nextcloud-db
+  #   volumes:
+  #     - /mnt/raid/nextcloud/db:/var/lib/mysql
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=rootpassword
+  #     - MYSQL_DATABASE=nextcloud
+  #     - MYSQL_USER=nextcloud
+  #     - MYSQL_PASSWORD=password
+  #   restart: always
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - ./certbot/www/:/var/www/certbot/:rw
+  #     - ./certbot/conf/:/etc/letsencrypt/:rw

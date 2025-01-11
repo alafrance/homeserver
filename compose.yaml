@@ -1,17 +1,15 @@
 services:
-  proxy:
-    image: nginx:latest
-    container_name: server-proxy
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./proxy/conf.d:/etc/nginx/conf.d
-      - ./proxy/certs:/etc/nginx/certs:ro
-    restart: always
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
     depends_on:
       - dashy
       - nextcloud
+      - immich-server
   
   dashy:
     image: lissy93/dashy
@@ -19,7 +17,7 @@ services:
     volumes:
       - ./dashy/conf.yaml:/app/user-data/conf.yml
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV_DASHY}
     restart: always
    
   nextcloud:
@@ -28,20 +26,19 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - /mnt/md0/data:/var/www/html/data
+      - ${NEXTCLOUD_DATA_URL}:/var/www/html/data
       - ./nextcloud/config:/var/www/html/config
       - ./nextcloud/apps:/var/www/html/custom_apps
-      - /mnt/md0/media/:/media
-      - /mnt/md0/pictures/:/pictures
-
+      - ${JELLYFIN_MEDIA_URL}:/media
+      - ${IMMICH_PICTURE_URL}:/pictures
     environment:
       - MYSQL_HOST=nextclouddb
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=password
+      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
+      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
+      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
+      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
+      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
       - REDIS_HOST=redis
-      - NEXTCLOUD_ADMIN_USER=root
-      - NEXTCLOUD_ADMIN_PASSWORD=password
     depends_on:
       - nextclouddb
       - redis
@@ -51,28 +48,28 @@ services:
     image: mariadb:latest
     container_name: nextclouddb
     volumes:
-      - /mnt/md0/config/nextcloud_db:/var/lib/mysql
+      - ${NEXTCLOUD_DB_URL}:/var/lib/mysql
     environment:
-      - MYSQL_ROOT_PASSWORD=root_password
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_DB_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
+      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
+      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
     restart: always
 
   redis:
     image: redis:alpine
     container_name: redis
     volumes:
-      - /mnt/md0/config/nextcloud_cache:/data
+      - ${REDIS_CACHE_URL}:/data
     restart: always
 
   jellyfin:
     image: jellyfin/jellyfin:latest
     container_name: jellyfin
     volumes:
-      - /mnt/md0/config/jellyfin_cache:/cache
+      - ${JELLYFIN_CACHE_URL}:/cache
+      - ${JELLYFIN_MEDIA_URL}:/media
       - ./jellyfin/config:/config
-      - /mnt/md0/media:/media
     restart: 'unless-stopped'
     ports:
       - 8096:8096
@@ -81,14 +78,14 @@ services:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:release
     volumes:
-      - /mnt/md0/pictures:/usr/src/app/upload
+      - ${IMMICH_PICTURE_URL}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 2283:2283
     environment:
-      - DB_PASSWORD=postgres
-      - DB_USERNAME=postgres
-      - DB_DATABASE_NAME=immich
+      - DB_USERNAME=${IMMICH_DB_USERNAME}
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
       - DB_HOSTNAME=immich_database
     depends_on:
       - redis
@@ -99,11 +96,11 @@ services:
     container_name: immich_machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:release
     volumes:
-      - /mnt/md0/config/immich_ia_cache:/cache
+      - ${IMMICH_IA_CACHE_URL}:/cache
     environment:
-      - DB_PASSWORD=postgres
-      - DB_USERNAME=postgres
-      - DB_DATABASE_NAME=immich
+      - DB_USERNAME=${IMMICH_DB_USERNAME}
+      - DB_PASSWORD=${IMMICH_DB_PASSWORD}
+      - DB_DATABASE_NAME=${IMMICH_DB_DATABASE_NAME}
       - DB_HOSTNAME=immich_database
     restart: always
 
@@ -111,12 +108,11 @@ services:
     container_name: immich_database
     image: docker.io/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
     environment:
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_DB: immich
+      - POSTGRES_USER=${IMMICH_DB_USERNAME}
+      - POSTGRES_PASSWORD=${IMMICH_DB_PASSWORD}
+      - POSTGRES_DB=${IMMICH_DB_DATABASE_NAME}
     volumes:
-      # Do not edit the next line. If you want to change the database storage location on your system, edit the value of DB_DATA_LOCATION in the .env file
-      - /mnt/md0/config/immich_db:/var/lib/postgresql/data
+      - ${IMMICH_DB_URL}:/var/lib/postgresql/data
     command: >-
       postgres
       -c shared_preload_libraries=vectors.so
@@ -126,10 +122,3 @@ services:
       -c shared_buffers=512MB
       -c wal_compression=on
     restart: always
-
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - ./certbot/www/:/var/www/certbot/:rw
-  #     - ./certbot/conf/:/etc/letsencrypt/:rw

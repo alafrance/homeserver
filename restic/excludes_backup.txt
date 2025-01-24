@@ -1,0 +1,4 @@
+/mnt/md127/config/immich_ia_cache
+/mnt/md127/config/jellyfin_cache
+/mnt/md127/config/redis
+/mnt/md127/**/tmp

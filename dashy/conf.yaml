@@ -1,13 +1,64 @@
 pageInfo:
-  title: 'Loudemer'
-sections: # An array of sections
-- name: Getting Started
-  items: # An array of items
-  - title: Nginx docker
-    description: A live demo
-    icon: fas fa-server
-    url: http://192.168.1.14:80
-  - title: Demo
-    description: A live demo
-    icon: fab fa-html5
-    url: http://192.168.1.14:8081
+  title: Labourelle
+appConfig:
+  language: fr
+  layout: auto
+  theme: lissy
+  iconSize: large
+  auth:
+    users:
+    - user: alexis
+      hash: D39D9778C23AFC1FB2C8211347A77AAF35DF49AC42E48EB0C53D110B358C7E84
+      type: admin
+sections:
+- name: Modules
+  icon: fas fa-cubes
+  displayData:
+    cols: 2
+  items:
+  - title: Jellyfin
+    description: Vidéo
+    icon: https://static-00.iconduck.com/assets.00/jellyfin-icon-512x512-bgjauu2p.png
+    url: https://film.labourelle-serveur.fr
+    statusCheck: true
+  - title: Nextcloud
+    description: Cloud
+    icon: https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Nextcloud_Logo.svg/282px-Nextcloud_Logo.svg.png?20210301111141
+    url: https://cloud.labourelle-serveur.fr
+    statusCheck: true
+  - title: Immich
+    icon: https://www.cloudron.io/store/icons/app.immich.cloudronapp.png
+    description: Photo
+    statusCheck: true
+    url: https://photo.labourelle-serveur.fr
+- name: Network
+  icon: fas fa-sitemap
+  displayData:
+  widgets:
+  - type: gl-network-interfaces
+    options:
+      hostname: http://localhost:61208
+- name: Nasa
+  displayData:
+  icon: fas fa-rocket
+  widgets:
+  - type: apod
+- name: CPU
+  icon: fas fa-disk
+  displayData:
+  widgets:
+  - type: gl-current-cpu
+    options:
+      hostname: http://localhost:61208
+  - type: gl-cpu-temp
+    options:
+      hostname: http://localhost:61208
+      units: C
+
+- name: Disk utility
+  displayData:
+  icon: fas fa-hard-drive
+  widgets:
+  - type: gl-disk-io
+    options:
+      hostname: http://localhost:61208

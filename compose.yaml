@@ -19,6 +19,22 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV_DASHY}
     restart: always
+    depends_on:
+      - glances
+
+  glances:
+    image: nicolargo/glances:latest
+    container_name: glances
+    volumes:
+      -  /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 61208:61208
+    environment:
+      - GLANCES_OPT=-w
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Paris
+    restart: unless-stopped
    
   nextcloud:
     image: nextcloud:latest

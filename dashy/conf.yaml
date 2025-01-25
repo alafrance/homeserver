@@ -31,6 +31,26 @@ sections:
     description: Photo
     statusCheck: true
     url: https://photo.labourelle-serveur.fr
+  - title: Radarr
+    icon: https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
+    description: Film tracker
+    statusCheck: true
+    url: https://radarr.labourelle-serveur.fr
+  - title: Sonarr
+    icon: https://static-00.iconduck.com/assets.00/sonarr-icon-2046x2048-jr5zhoo0.png
+    description: Serie tracker
+    statusCheck: true
+    url: https://sonarr.labourelle-serveur.fr
+  - title: Jackett
+    icon: https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png
+    description: Indexer torrent
+    url:  https://jackett.labourelle-serveur.fr/UI/Dashboard
+  - title: Jellyseerr
+    icon: https://static-00.iconduck.com/assets.00/jellyseerr-icon-1024x984-rftn1oov.png
+    description: Recommandation
+    statusCheck: true
+    url: https://reco.labourelle-serveur.fr
+
 - name: Network
   icon: fas fa-sitemap
   displayData:
@@ -44,7 +64,7 @@ sections:
   widgets:
   - type: apod
 - name: CPU
-  icon: fas fa-disk
+  icon: fas fa-microchip
   displayData:
   widgets:
   - type: gl-current-cpu
@@ -57,7 +77,7 @@ sections:
 
 - name: Disk utility
   displayData:
-  icon: fas fa-hard-drive
+  icon: fas fa-desktop
   widgets:
   - type: gl-disk-io
     options:

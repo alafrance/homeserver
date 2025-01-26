@@ -46,7 +46,8 @@ services:
       - ./nextcloud/config:/var/www/html/config
       - ./nextcloud/apps:/var/www/html/custom_apps
       - ${JELLYFIN_MEDIA_URL}:/media
-      - ${IMMICH_PICTURE_URL}:/pictures
+      - ${ROOT_URL}/Pictures:/pictures
+      - ${ROOT_URL}/Documents:/documents
     environment:
       - MYSQL_HOST=nextclouddb
       - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
@@ -55,6 +56,8 @@ services:
       - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
       - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
       - REDIS_HOST=redis
+      - PUID=1000
+      - PGID=1000
     depends_on:
       - nextclouddb
       - redis
@@ -95,6 +98,7 @@ services:
     image: ghcr.io/immich-app/immich-server:release
     volumes:
       - ${IMMICH_PICTURE_URL}:/usr/src/app/upload
+      - ${PICTURE_URL}:/mnt/media/pictures/
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 2283:2283

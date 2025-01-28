@@ -50,6 +50,21 @@ sections:
     description: Recommandation
     statusCheck: true
     url: https://reco.labourelle-serveur.fr
+  - title: Bitwarden
+    icon: https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRO5_mSVPH2SS9J9xhr8ZAN2oeA8zZuXDdd-w&s
+    description: Password manager
+    statusCheck: true
+    url: https://password.labourelle-serveur.fr
+  - title: Prowlarr
+    icon: https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/prowlarr-banner.png
+    description: Indexer manager
+    statusCheck: true
+    url: https://indexer.labourelle-serveur.fr
+  - title: Qbittorrent
+    icon: https://upload.wikimedia.org/wikipedia/commons/6/66/New_qBittorrent_Logo.svg
+    description: Torrent client
+    statusCheck: true
+
 
 - name: Network
   icon: fas fa-sitemap

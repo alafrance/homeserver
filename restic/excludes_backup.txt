@@ -1,4 +1,5 @@
-/mnt/md127/config/immich_ia_cache
-/mnt/md127/config/jellyfin_cache
-/mnt/md127/config/redis
-/mnt/md127/**/tmp
+/mnt/all/config/immich_ia_cache
+/mnt/all/config/jellyfin_cache
+/mnt/all/config/qbittorrent_downloads
+/mnt/all/config/redis
+/mnt/all/**/tmp

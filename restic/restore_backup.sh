@@ -7,4 +7,4 @@ export B2_ACCOUNT_KEY
 export RESTIC_PASSWORD
 
 
-sudo -E restic -r $RESTIC_REPOSITORY restore  --verbose latest --target /mnt/raid
+sudo -E restic -r $RESTIC_REPOSITORY restore  --verbose latest --target ${ROOT_URL}/b2

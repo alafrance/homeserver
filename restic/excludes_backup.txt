@@ -3,3 +3,4 @@
 /mnt/all/config/qbittorrent_downloads
 /mnt/all/config/redis
 /mnt/all/**/tmp
+/mnt/all/Movies

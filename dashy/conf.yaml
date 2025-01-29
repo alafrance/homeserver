@@ -31,6 +31,10 @@ sections:
     description: Photo
     statusCheck: true
     url: https://photo.labourelle-serveur.fr
+  - title: Backblaze
+    icon: https://static-00.iconduck.com/assets.00/backblaze-icon-512x512-4wg04jc3.png
+    description: Cloud backup
+    url: https://secure.backblaze.com/b2_buckets.htm
   - title: Radarr
     icon: https://static-00.iconduck.com/assets.00/radarr-icon-1845x2048-97le6lim.png
     description: Film tracker
@@ -41,10 +45,6 @@ sections:
     description: Serie tracker
     statusCheck: true
     url: https://sonarr.labourelle-serveur.fr
-  - title: Jackett
-    icon: https://user-images.githubusercontent.com/27040483/28728094-99f3e3f6-73c7-11e7-8f8d-28912dc6ac0d.png
-    description: Indexer torrent
-    url:  https://jackett.labourelle-serveur.fr/UI/Dashboard
   - title: Jellyseerr
     icon: https://static-00.iconduck.com/assets.00/jellyseerr-icon-1024x984-rftn1oov.png
     description: Recommandation
@@ -61,39 +61,12 @@ sections:
     statusCheck: true
     url: https://indexer.labourelle-serveur.fr
   - title: Qbittorrent
+    url: https://qbit.labourelle-serveur.fr
     icon: https://upload.wikimedia.org/wikipedia/commons/6/66/New_qBittorrent_Logo.svg
     description: Torrent client
     statusCheck: true
-
-
-- name: Network
-  icon: fas fa-sitemap
-  displayData:
-  widgets:
-  - type: gl-network-interfaces
-    options:
-      hostname: http://localhost:61208
 - name: Nasa
   displayData:
   icon: fas fa-rocket
   widgets:
   - type: apod
-- name: CPU
-  icon: fas fa-microchip
-  displayData:
-  widgets:
-  - type: gl-current-cpu
-    options:
-      hostname: http://localhost:61208
-  - type: gl-cpu-temp
-    options:
-      hostname: http://localhost:61208
-      units: C
-
-- name: Disk utility
-  displayData:
-  icon: fas fa-desktop
-  widgets:
-  - type: gl-disk-io
-    options:
-      hostname: http://localhost:61208

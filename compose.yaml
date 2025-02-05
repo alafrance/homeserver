@@ -8,7 +8,7 @@ services:
     command: tunnel --no-autoupdate run
     depends_on:
       - dashy
-      - nextcloud
+#      - nextcloud
       - immich-server
   
   dashy:
@@ -19,47 +19,45 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV_DASHY}
     restart: always
-    depends_on:
-      - glances
 
-  nextcloud:
-    image: nextcloud:latest
-    container_name: nextcloud
-    ports:
-      - "8080:80"
-    volumes:
-      - ${NEXTCLOUD_DATA_URL}:/var/www/html/data
-      - ./nextcloud/config:/var/www/html/config
-      - ./nextcloud/apps:/var/www/html/custom_apps
-      - ${JELLYFIN_MEDIA_URL}:/media
-      - ${ROOT_URL}/Pictures:/pictures
-      - ${ROOT_URL}/Documents:/documents
-    environment:
-      - MYSQL_HOST=nextclouddb
-      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
-      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
-      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
-      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
-      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
-      - REDIS_HOST=redis
-      - PUID=1000
-      - PGID=1000
-    depends_on:
-      - nextclouddb
-      - redis
-    restart: always
-
-  nextclouddb:
-    image: mariadb:latest
-    container_name: nextclouddb
-    volumes:
-      - ${NEXTCLOUD_DB_URL}:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_DB_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
-      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
-      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
-    restart: always
+#  nextcloud:
+#    image: nextcloud:latest
+#    container_name: nextcloud
+#    ports:
+#      - "8080:80"
+#    volumes:
+#      - ${NEXTCLOUD_DATA_URL}:/var/www/html/data
+#      - ./nextcloud/config:/var/www/html/config
+#      - ./nextcloud/apps:/var/www/html/custom_apps
+#      - ${JELLYFIN_MEDIA_URL}:/media
+#      - ${ROOT_URL}/Pictures:/pictures
+#      - ${ROOT_URL}/Documents:/documents
+#    environment:
+#      - MYSQL_HOST=nextclouddb
+#      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
+#      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
+#      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
+#      - NEXTCLOUD_ADMIN_USER=${NEXTCLOUD_ADMIN_USER}
+#      - NEXTCLOUD_ADMIN_PASSWORD=${NEXTCLOUD_ADMIN_PASSWORD}
+#      - REDIS_HOST=redis
+#      - PUID=1000
+#      - PGID=1000
+#    depends_on:
+#      - nextclouddb
+#      - redis
+#    restart: always
+#
+#  nextclouddb:
+#    image: mariadb:latest
+#    container_name: nextclouddb
+#    volumes:
+#      - ${NEXTCLOUD_DB_URL}:/var/lib/mysql
+#    environment:
+#      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_DB_ROOT_PASSWORD}
+#      - MYSQL_DATABASE=${NEXTCLOUD_MYSQL_DATABASE}
+#      - MYSQL_USER=${NEXTCLOUD_MYSQL_USER}
+#      - MYSQL_PASSWORD=${NEXTCLOUD_MYSQL_PASSWORD}
+#    restart: always
 
   redis:
     image: redis:alpine
@@ -142,79 +140,79 @@ services:
     volumes:
       - ${BITWARDEN_URL_DATA}:/data
   
-  sonarr:
-    image: lscr.io/linuxserver/sonarr:latest
-    container_name: sonarr
-    environment:
-      - TZ=Europe/Paris
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - ${SONARR_URL_CONFIG}:/config
-      - ${SONARR_MEDIA_URL}:/tv
-      - ${SONARR_DOWNLOAD_URL}:/downloads
-    networks:
-      - default
-    ports:
-      - 8989:8989
-    restart: unless-stopped
-  
-  radarr:
-    image: lscr.io/linuxserver/radarr:latest
-    container_name: radarr
-    environment:
-      - TZ=Europe/Paris
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - ${RADARR_URL_CONFIG}:/config
-      - ${RADARR_MEDIA_URL}:/movies
-      - ${RADARR_DOWNLOAD_URL}:/downloads
-    networks:
-      - default
-    ports:
-      - 7878:7878
-    restart: unless-stopped
-
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - TZ=Europe/Paris
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - ${PROWLARR_CONFIG_URL}:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
-  
-  jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: jellyseerr
-    environment:
-      - TZ=Europe/Paris
-      - PUID=1000
-      - PGID=1000
-    ports:
-      - 5055:5055
-    volumes:
-      - ${JELLYSEERR_CONFIG_URL}:/app/config
-    restart: unless-stopped
-  
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Paris
-    volumes:
-      - ${QBITTORRENT_CONFIG_URL}:/config
-      - ${QBITTORRENT_DOWNLOAD_URL}:/downloads 
-    ports:
-      - 8081:8080
-      - 8999:8999
-      - 8999:8999/udp
-    network_mode: "host"
-    restart: unless-stopped
+#  sonarr:
+#    image: lscr.io/linuxserver/sonarr:latest
+#    container_name: sonarr
+#    environment:
+#      - TZ=Europe/Paris
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - ${SONARR_URL_CONFIG}:/config
+#      - ${SONARR_MEDIA_URL}:/tv
+#      - ${SONARR_DOWNLOAD_URL}:/downloads
+#    networks:
+#      - default
+#    ports:
+#      - 8989:8989
+#    restart: unless-stopped
+#
+#  radarr:
+#    image: lscr.io/linuxserver/radarr:latest
+#    container_name: radarr
+#    environment:
+#      - TZ=Europe/Paris
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - ${RADARR_URL_CONFIG}:/config
+#      - ${RADARR_MEDIA_URL}:/movies
+#      - ${RADARR_DOWNLOAD_URL}:/downloads
+#    networks:
+#      - default
+#    ports:
+#      - 7878:7878
+#    restart: unless-stopped
+#
+#  prowlarr:
+#    image: lscr.io/linuxserver/prowlarr:latest
+#    container_name: prowlarr
+#    environment:
+#      - TZ=Europe/Paris
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - ${PROWLARR_CONFIG_URL}:/config
+#    ports:
+#      - 9696:9696
+#    restart: unless-stopped
+#
+#  jellyseerr:
+#    image: fallenbagel/jellyseerr:latest
+#    container_name: jellyseerr
+#    environment:
+#      - TZ=Europe/Paris
+#      - PUID=1000
+#      - PGID=1000
+#    ports:
+#      - 5055:5055
+#    volumes:
+#      - ${JELLYSEERR_CONFIG_URL}:/app/config
+#    restart: unless-stopped
+#
+#  qbittorrent:
+#    image: lscr.io/linuxserver/qbittorrent:latest
+#    container_name: qbittorrent
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Europe/Paris
+#    volumes:
+#      - ${QBITTORRENT_CONFIG_URL}:/config
+#      - ${QBITTORRENT_DOWNLOAD_URL}:/downloads
+#    ports:
+#      - 8081:8080
+#      - 8999:8999
+#      - 8999:8999/udp
+#    network_mode: "host"
+#    restart: unless-stopped

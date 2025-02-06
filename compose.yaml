@@ -9,7 +9,7 @@ services:
     depends_on:
       - dashy
 #      - nextcloud
-      - immich-server
+      - immich_server
   
   dashy:
     image: lissy93/dashy
@@ -72,12 +72,24 @@ services:
     volumes:
       - ${JELLYFIN_CACHE_URL}:/cache
       - ${JELLYFIN_MEDIA_URL}:/media
-      - ./jellyfin/config:/config
+      - ${JELLYFIN_CONFIG_URL}:/config
     restart: 'unless-stopped'
+    # runtime: nvidia
+    # network_mode: 'host'
+    # deploy:
+    #   resources:
+    #     reservations: 
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+    # environment:
+    #   - NVIDIA_DRIVER_CAPABILITIES=all
+    #   - NVIDIA_VISIBLE_DEVICES=all
     ports:
       - 8096:8096
   
-  immich-server:
+  immich_server:
     container_name: immich_server
     image: ghcr.io/immich-app/immich-server:release
     volumes:

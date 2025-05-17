@@ -10,7 +10,16 @@ services:
       - dashy
 #      - nextcloud
       - immich_server
-  
+
+  portfolio:
+    container_name: portfolio
+    build:
+      context: ./portfolio
+      dockerfile: .Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+
   dashy:
     image: lissy93/dashy
     container_name: dashy

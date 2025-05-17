@@ -10,6 +10,9 @@ services:
       - dashy
 #      - nextcloud
       - immich_server
+<<<<<<< HEAD
+  
+=======
 
   portfolio:
     container_name: portfolio
@@ -20,6 +23,7 @@ services:
     ports:
       - 3000:3000
 
+>>>>>>> 2632ce064fca9dbe8173920708255852e562dc4b
   dashy:
     image: lissy93/dashy
     container_name: dashy
